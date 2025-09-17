@@ -1,6 +1,13 @@
-### Deprecated Library
+> [!CAUTION]
+> ## Deprecated Library - 16KB Page Size Support Options
 
 The `android-database-sqlcipher` project has been [officially deprecated](https://www.zetetic.net/blog/2023/08/31/sqlcipher-4.5.5-release#sqlcipher-android-455). The long-term replacement is [`sqlcipher-android`](https://github.com/sqlcipher/sqlcipher-android). Instructions for migrating from `android-database-sqlcipher` to `sqlcipher-android`may be found [here](https://www.zetetic.net/sqlcipher/sqlcipher-for-android-migration/).
+
+Google is now making 16KB page compatibility required for applications in the Play Store. To support this requirement, native libraries for Android must be specifically built to support 16KB page sizes.
+
+This library is no longer being updated. Please review this post for migration and long term support options:
+
+https://www.zetetic.net/blog/2025/06/26/sqlcipher-for-android-16kb-page-size-support/
 
 
 ### Download Source and Binaries
