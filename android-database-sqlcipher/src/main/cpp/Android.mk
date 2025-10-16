@@ -7,6 +7,9 @@ LOCAL_CFLAGS +=  $(SQLCIPHER_CFLAGS) $(SQLCIPHER_OTHER_CFLAGS)
 LOCAL_C_INCLUDES += $(LOCAL_PATH)
 LOCAL_LDLIBS := -llog
 LOCAL_LDFLAGS += -L$(ANDROID_NATIVE_ROOT_DIR)/$(TARGET_ARCH_ABI) -fuse-ld=bfd
+# 支持16KB
+LOCAL_LDFLAGS += -Wl,-z,max-page-size=16384 -Wl,-z,common-page-size=16384
+
 LOCAL_STATIC_LIBRARIES += static-libcrypto
 LOCAL_MODULE    := libsqlcipher
 LOCAL_SRC_FILES := sqlite3.c \
