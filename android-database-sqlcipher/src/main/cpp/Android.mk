@@ -7,8 +7,10 @@ LOCAL_CFLAGS +=  $(SQLCIPHER_CFLAGS) $(SQLCIPHER_OTHER_CFLAGS)
 LOCAL_C_INCLUDES += $(LOCAL_PATH)
 LOCAL_LDLIBS := -llog
 LOCAL_LDFLAGS += -L$(ANDROID_NATIVE_ROOT_DIR)/$(TARGET_ARCH_ABI) -fuse-ld=bfd
-# 支持16KB
+# 强制所有架构使用16KB页面对齐
 LOCAL_LDFLAGS += -Wl,-z,max-page-size=16384 -Wl,-z,common-page-size=16384
+# 添加 --no-warn-shared-textrel 避免相关警告
+LOCAL_LDFLAGS += -Wl,--no-warn-shared-textrel
 
 LOCAL_STATIC_LIBRARIES += static-libcrypto
 LOCAL_MODULE    := libsqlcipher

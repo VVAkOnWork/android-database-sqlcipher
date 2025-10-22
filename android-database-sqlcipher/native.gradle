@@ -69,6 +69,12 @@ task buildNative() {
       from fileTree("${nativeRootOutputDir}/libs64").include("*/*")
       into "${nativeRootOutputDir}/libs"
     }
+
+    // 验证最终so文件的对齐情况(在最终so文件构建后验证所有架构的对齐情况)
+    exec {
+      workingDir "${nativeRootOutputDir}/libs"
+      commandLine "find", ".", "-name", "*.so", "-exec", "echo", "=== Alignment check for {} ===", ";", "-exec", "readelf", "-l", "{}", ";"
+    }
   }
 }
 

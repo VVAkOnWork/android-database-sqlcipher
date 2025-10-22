@@ -156,7 +156,9 @@ OPENSSL=openssl-$3
 
      # 方法1：直接使用make，依赖我们修补过的Makefile
      echo "Building with patched Makefile..."
-     make build_libs
+     # 强制使用16KB页面对齐构建(在OpenSSL配置阶段就加入16KB对齐标志,在make命令中显式传递LDFLAGS)
+     make build_libs CC="${CC}" AR="${AR}" RANLIB="${RANLIB}" \
+                     LDFLAGS="-Wl,-z,max-page-size=16384 -Wl,-z,common-page-size=16384"
 
      # 如果方法1失败，尝试方法2：明确传递所有工具
      if [[ $? -ne 0 ]]; then
@@ -197,6 +199,13 @@ OPENSSL=openssl-$3
      if [[ $? -ne 0 ]]; then
          echo "Failed to build for platform:${SQLCIPHER_TARGET_PLATFORM}"
          exit 1
+     fi
+
+     # 验证生成的库对齐情况(添加对齐验证步骤)
+     echo "Verifying alignment for ${SQLCIPHER_TARGET_PLATFORM}..."
+     if [[ -f "libcrypto.a" ]]; then
+         ${OBJDUMP} -p libcrypto.a | grep "Align" || true
+         echo "libcrypto.a alignment check completed"
      fi
 
      mkdir -p ${ANDROID_LIB_ROOT}/${SQLCIPHER_TARGET_PLATFORM}
